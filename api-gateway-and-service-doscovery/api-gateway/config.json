@@ -1,0 +1,43 @@
+{
+  "server":{
+    "id":"MicroNodeApiGateway",
+    "port":8080,
+    "isCluster":true,
+    "https":{
+      "isEnabled":false,
+      "key":"",
+      "ca":""
+    },
+    "headers":[
+      {"name":"Access-Control-Allow-Origin","value":"*"},
+      {"name":"Access-Control-Allow-Headers","value":"Origin, X-Requested-With, Content-Type, Accept"},
+      {"name":"Access-Control-Allow-Methods","value":"GET,PUT,POST,DELETE,OPTIONS"}
+    ]
+  },
+  "api":{
+    "route":"api",
+    "modules":[
+      {"name":"login", "path":"api/account", "route":"account/login"},
+      {"name":"signup", "path":"api/account", "route":"account/signup"},
+      {"name":"orders", "path":"api/crm/orders", "route":"crm/orders"}
+    ]
+  },
+  "services":[
+      {"name":"ServiceLog", "endpointId":"log"},
+      {"name":"ServiceLogin", "endpointId":"login"},
+      {"name":"ServiceSignup", "endpointId":"signup"},
+      {"name":"ServiceOrders", "endpointId":"orders"}
+  ],
+  "serviceRegistry":{
+      "database":{
+        "name":"my_mongo_db",
+        "user":"my_mongo_db_user",
+        "password":"my_mongo_db_password",
+        "host":"my_mongo_db_host",
+        "port":27017
+      }
+  }
+}
+
+
+

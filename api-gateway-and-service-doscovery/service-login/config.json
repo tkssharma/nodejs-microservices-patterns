@@ -1,0 +1,39 @@
+{
+  "server":{
+    "id":"ServiceLogin",
+    "port":8081,
+    "isCluster":true,
+    "https":{
+      "isEnabled":false,
+      "key":"",
+      "ca":""
+    },
+    "headers":[
+      {"name":"Access-Control-Allow-Origin","value":"*"},
+      {"name":"Access-Control-Allow-Headers","value":"Origin, X-Requested-With, Content-Type, Accept"},
+      {"name":"Access-Control-Allow-Methods","value":"GET,PUT,POST,DELETE,OPTIONS"}
+    ]
+  },
+  "api":{
+    "route":"api",
+    "modules":[
+      {"name":"login", "route":"login"}
+    ]
+  },
+  "serviceRegistry":{
+      "watchDog":{
+        "isEnabled":false,
+        "timer":30000
+      },
+    "database":{
+      "name":"my_mongo_db",
+      "user":"my_mongo_db_user",
+      "password":"my_mongo_db_password",
+      "host":"my_mongo_db_host",
+      "port":27017
+    }
+  }
+}
+
+
+

@@ -1,0 +1,72 @@
+version: '3'
+
+services:
+  articles-management:
+    container_name: articles-management
+    build:
+      context: ./services/articles-management
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - MESSAGE_BUS=amqp://rabbitmq
+    links:
+      - rabbitmq
+  
+  events-management:
+    container_name: events-management
+    build:
+      context: ./services/events-management
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3000"
+    environment:
+      - PORT=3000
+      - MESSAGE_BUS=amqp://rabbitmq
+    links:
+      - rabbitmq
+  
+  user-management:
+    container_name: user-management
+    build:
+      context: ./services/user-management
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3000"
+    environment:
+      - PORT=3000
+      - MESSAGE_BUS=amqp://rabbitmq
+    links:
+      - rabbitmq
+  
+  authentication:
+    container_name: authentication
+    build:
+      context: ./services/authentication
+      dockerfile: Dockerfile
+    ports:
+      - "3003:3000"
+    environment:
+      - PORT=3000
+      - MESSAGE_BUS=amqp://rabbitmq
+    links:
+      - rabbitmq
+  
+  notification:
+    container_name: notification
+    build:
+      context: ./services/notification
+      dockerfile: Dockerfile
+    environment:
+      - MESSAGE_BUS=amqp://rabbitmq
+      - EMAIL_SERVICE=gmail
+      - EMAIL_ID=noreply.localnewsapplication@gmail.com
+      - EMAIL_PASSWORD=Testing0*
+      - ADMIN_EMAIL=localnewsapp340ct@gmail.com
+    links:
+      - rabbitmq
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3.7.4

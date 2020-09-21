@@ -1,0 +1,36 @@
+{
+  "name": "DoorApiGateway",
+  "version": "0.0.1",
+  "description": "Api Gateway",
+  "author": {
+    "name": "Domenico Vacchiano",
+    "email": "domenico@doorgames.com",
+    "url": "http://www.doorgames.com"
+  },
+  "homepage": "http://www.doorgames.com/",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+
+  "engines": {
+    "node": ">= 0.6.0",
+    "npm": ">= 1.0.0"
+  },
+
+  "dependencies": {
+    "express": "^4.13.4",
+    "body-parser":"^1.15.1",
+    "jsonwebtoken": "^7.0.0",
+    "request":"^2.72.0",
+    "morgan": "^1.7.0",
+    "micro-node-net-lib":"git@github.com:alchimya/micro-node-net-lib.git",
+    "micro-node-service-registry-lib":"git@github.com:alchimya/micro-node-service-registry-lib.git"
+
+  },
+  "private": true,
+  "scripts": {
+    "start": "node server.js"
+  },
+  "main": "server.js"
+}

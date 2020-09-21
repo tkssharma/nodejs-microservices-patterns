@@ -1,0 +1,43 @@
+# Documentation
+# https://docs.docker.com/compose/compose-file
+
+version: '3'
+
+services:
+  eventstore:
+    image: eventstore/eventstore
+    ports:
+      - 2113:2113
+      - 1113:1113
+    environment:
+      - EVENTSTORE_RUN_PROJECTIONS=All
+      - EVENTSTORE_START_STANDARD_PROJECTIONS=true
+    networks:
+      - backend
+
+  boilerplate-nodejs-cqrs-es-swagger:
+    build:
+      context: "."
+    command: ${CONTAINER_COMMAND}
+    restart: always
+    deploy:
+      mode: replicated
+      replicas: ${CONTAINER_SCALE}
+    depends_on:
+      - eventstore
+    env_file:
+      - "./.env"
+    environment:
+      - EVENT_STORE_HOSTNAME=eventstore
+    ports:
+      - "${CONTAINER_PORT}:7070"
+    volumes:
+      - "./src:/app/src"
+    links:
+      - eventstore
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge

@@ -1,0 +1,103 @@
+version: '3.5'
+services:
+  gateway:
+    image: nginx:1.11
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./proxy/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./proxy/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - ms_commerce_auth
+      - ms_commerce_admin
+      - ms_commerce_client
+    networks:
+      - ms_network
+  ms_mysql:
+    container_name: ms_mysql
+    image: mysql:5.7
+    volumes:
+      - ~/datadir/mysql:/var/lib/mysql
+    ports:
+      - 3306:3306
+      - 33060:33060
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - ms_network
+  ms_commerce_mongo:
+    image: mongo
+    container_name: ms_commerce_mongo
+    restart: unless-stopped
+    volumes:
+      - ~/datadir/mongo:/data/db
+    ports:
+      - 27017:27017
+    networks:
+      - ms_network
+  ms_commerce_auth:
+    container_name: ms_commerce_auth
+    build: ./e-Commerce-Auth/
+    image: e-commerce-auth
+    volumes:
+      - ./e-Commerce-Auth/:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 3001:3001
+      - 9201:9201
+    depends_on:
+      - ms_mysql
+    networks:
+      - ms_network
+  ms_commerce_cart:
+    container_name: ms_commerce_cart
+    build: ./e-Commerce-Cart/
+    image: e-commerce-cart
+    volumes:
+      - ./e-Commerce-Cart/:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 3004:3004
+      - 9204:9204
+    depends_on:
+      - ms_mysql
+    networks:
+      - ms_network      
+  ms_commerce_admin:
+    build: ./e-Commerce-Admin/
+    image: e-commerce-admin
+    container_name: ms_commerce_admin
+    environment:
+      - NODE_ENV=local
+    volumes:
+      - ./e-Commerce-Admin/:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 3002:3002
+      - 9202:9202
+    depends_on:
+      - ms_commerce_mongo
+    networks:
+      - ms_network
+  ms_commerce_client:
+    build: ./e-Commerce-Client/
+    image: e-commerce-client
+    container_name: ms_commerce_client
+    environment:
+      - NODE_ENV=local
+    volumes:
+      - ./e-Commerce-Client/:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 3003:3003
+    depends_on:
+      - ms_commerce_admin
+      - ms_commerce_auth
+    networks:
+      - ms_network      
+networks:
+  ms_network:
+    driver: bridge
+    name: ms_network
+
