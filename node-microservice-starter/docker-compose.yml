@@ -1,0 +1,45 @@
+version: '2'
+
+services:
+    mongo:
+        container_name: ms_mongo
+        image: mongo:latest
+        ports:
+            - "27017:27017"
+        volumes:
+            - "./mongo/db:/data/db"
+
+    nginx:
+        build: ./nginx
+        container_name: ms_nginx
+        links:
+            - store
+            - users
+        ports:
+            - "80:80"
+
+    store:
+        build: ./store
+        container_name: ms_store
+        environment:
+            - loglevel=none
+        links:
+            - "mongo:mongo"
+        volumes:
+            - "./store:/src/app"
+        working_dir: "/src/app"
+        ports:
+            - "8080:8080"
+            - "5858:5858"
+        # command: npm run start
+        command: npm run start
+
+    users:
+        build: ./users
+        container_name: ms_users
+        links:
+            - neo4j
+        volumes:
+            - "./users:/src/app"
+        working_dir: "/src/app"
+        command: npm start
