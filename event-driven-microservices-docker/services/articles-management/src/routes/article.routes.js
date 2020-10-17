@@ -13,15 +13,15 @@ router.prefix(`/${config.baseAPIRoute}/${api}`);
 router.get('/', articleController.find);
 
 // POST /api/articles
-router.post('/', jwt, articleController.add);
+router.post('/', articleController.add);
 
 // GET /api/articles/id
 router.get('/:id', articleController.findById);
 
 // PUT /api/articles/id
-router.put('/:id', jwt, articleController.update);
+router.put('/:id', articleController.update);
 
 // DELETE /api/articles/id
-router.delete('/:id', jwt, articleController.delete);
+router.delete('/:id', articleController.delete);
 
 module.exports = router;

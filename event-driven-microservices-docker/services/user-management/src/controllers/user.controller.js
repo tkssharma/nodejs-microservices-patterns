@@ -3,7 +3,15 @@ const userAddedMessage = require('../message-bus/send/user.added');
 
 const userController = {
   find: async (ctx) => {
-    ctx.body = await Users.find();
+    try {
+      const newUser = await Users.create({
+        emailAddress: "test@gmail.com"
+      });
+      userAddedMessage.send(ctx.request.body);
+      ctx.body = newUser;
+    } catch (err) {
+      ctx.throw(422);
+    }
   },
 
   findById: async (ctx) => {

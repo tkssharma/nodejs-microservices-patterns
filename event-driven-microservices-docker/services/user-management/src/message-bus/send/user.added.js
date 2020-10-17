@@ -10,6 +10,7 @@ module.exports = {
       if (!user) {
         throw new Error('Sould send a valid user to message queue');
       }
+      console.log('sedning message to MQ')
       const connection = new amqp.Connection(config.messagebus);
       const exchange = connection.declareExchange(exchangeName, 'fanout', { durable: false });
       const message = new amqp.Message(JSON.stringify(user));

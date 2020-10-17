@@ -15,4 +15,9 @@ Mongoose.connection.on('error', console.error);
 // Run the API Server
 app.listen(config.port, () => {
   console.log(config.startedMessage);
+  console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+  console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+
+  console.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+
 });
