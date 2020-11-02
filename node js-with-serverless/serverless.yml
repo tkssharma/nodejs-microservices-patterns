@@ -1,0 +1,70 @@
+service: xanalytics-android-server
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: dev
+  region: us-east-2
+  iamManagedPolicies:
+    - arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess
+  environment:
+    TABLE_NAME: 'android-demo-crud'
+    REGION: ${opt:region, self:provider.region}
+
+package:
+  exclude:
+    - .build/**
+    - '*/**'
+  individually: true
+functions:
+  readAll:
+    handler: functions/read_all.readAll
+    package:
+      include:
+        - functions/read_all.js
+    events:
+      - http:
+          path: todo
+          method: get
+  readSingle:
+    handler: functions/read_single_item.readSingleItem
+    package:
+      include:
+        - functions/read_single_item.js
+    events:
+      - http:
+          path: todo/{id}
+          method: get
+  update:
+    handler: functions/edit_item.editItem
+    package:
+      include:
+        - functions/edit_item.js
+        - models/table_schema.js
+        - shared/update_dynamo.ts
+    events:
+      - http:
+          path: todo/{id}
+          method: put
+  insert:
+    handler: functions/write_item.writeItem
+    package:
+      include:
+        - functions/write_item.js
+        - models/table_schema.js
+        - shared/create_dynamo.js
+    events:
+      - http:
+          path: todo
+          method: post
+  delete:
+    handler: functions/delete_item.deleteItem
+    package:
+      include:
+        - functions/delete_item.js
+    events:
+      - http:
+          path: todo/{id}
+          method: delete
+plugins:
+  - serverless-offline
+  - serverless-plugin-typescript

@@ -1,0 +1,22 @@
+{
+  "name": "xanalytics-android-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "gully": "rm -rf .build && sls invoke local -f $1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "aws-sdk": "^2.617.0",
+    "serverless-offline": "^5.12.1",
+    "serverless-plugin-typescript": "^1.1.9",
+    "typescript": "^3.7.5",
+    "@types/node": "^13.7.1"
+  },
+  "dependencies": {
+    
+  }
+}
